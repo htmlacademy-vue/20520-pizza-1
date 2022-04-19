@@ -105,7 +105,7 @@
                       class="ingredients__item"
                     >
                       <span
-                        class="filling filling--mushrooms"
+                        class="filling"
                         :class="`filling--${ingredient.value}`"
                       >
                         {{ ingredient.name }}
