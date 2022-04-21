@@ -1,6 +1,4 @@
-FROM node:12-alpine
-
-RUN apk add --no-cache python2 g++ make
+FROM --platform=linux/amd64 node:16-slim
 
 WORKDIR /frontend
 
@@ -8,13 +6,7 @@ COPY package.json package-lock.json ./
 
 RUN npm install
 
-RUN apk --no-cache --virtual build-dependencies add \
-        python2 \
-        make \
-        g++ \
-&& npm install \
-&& npm install @vue/cli@4.5.8 -g \
-&& apk del build-dependencies
+RUN npm install @vue/cli@4.5.8 -g
 
 COPY . .
 
