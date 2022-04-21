@@ -39,7 +39,7 @@
                     name="dought"
                     :value="doughItem.value"
                     class="visually-hidden"
-                    :checked="doughItem.id === DEFAULT_DOUGH_ID"
+                    :checked="doughItem.id === defaultDoughId"
                   />
                   <b>{{ doughItem.name }}</b>
                   <span>{{ doughItem.description }}</span>
@@ -63,7 +63,7 @@
                     name="diameter"
                     :value="size.value"
                     class="visually-hidden"
-                    :checked="size.id === DEFAULT_SIZE_ID"
+                    :checked="size.id === defaultSizeId"
                   />
                   <span>{{ size.name }}</span>
                 </label>
@@ -89,7 +89,7 @@
                       type="radio"
                       name="sauce"
                       :value="sauce.value"
-                      :checked="sauce.id === DEFAULT_SAUCE_ID"
+                      :checked="sauce.id === defaultSauceId"
                     />
                     <span>{{ sauce.name }}</span>
                   </label>
@@ -196,10 +196,18 @@ export default {
       ),
       sauces: sauces.map((sauce) => normalizeSauces(sauce)),
       sizes: sizes.map((size) => normalizeSize(size)),
-      DEFAULT_DOUGH_ID,
-      DEFAULT_SIZE_ID,
-      DEFAULT_SAUCE_ID,
     };
+  },
+  computed: {
+    defaultDoughId() {
+      return DEFAULT_DOUGH_ID;
+    },
+    defaultSizeId() {
+      return DEFAULT_SIZE_ID;
+    },
+    defaultSauceId() {
+      return DEFAULT_SAUCE_ID;
+    },
   },
 };
 </script>
