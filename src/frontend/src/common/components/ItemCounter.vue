@@ -1,3 +1,41 @@
+<template>
+  <div class="counter">
+    <button
+      type="button"
+      class="counter__button counter__button--minus"
+      disabled
+    >
+      <span class="visually-hidden">Меньше</span>
+    </button>
+    <input type="text" name="counter" class="counter__input" value="0" />
+    <button
+      type="button"
+      class="counter__button counter__button--plus"
+      :class="orangeClass"
+    >
+      <span class="visually-hidden">Больше</span>
+    </button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "ItemCounter",
+  props: {
+    isOrange: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    orangeClass: function () {
+      return this.isOrange ? "counter__button--orange" : "";
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
 .counter {
   display: flex;
 
@@ -141,3 +179,4 @@
     box-shadow: inset $shadow-regular;
   }
 }
+</style>

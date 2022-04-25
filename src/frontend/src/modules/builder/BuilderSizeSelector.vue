@@ -1,3 +1,44 @@
+<template>
+  <div>
+    <div class="sheet">
+      <h2 class="title title--small sheet__title">Выберите размер</h2>
+      <div class="sheet__content diameter">
+        <RadioButton
+          v-for="size in sizes"
+          :key="size.id"
+          :data="size"
+          :default-id="defaultSizeId"
+          name="diameter"
+        >
+          <template #description>{{ size.name }}</template>
+        </RadioButton>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import RadioButton from "@/common/components/RadioButton.vue";
+import { DEFAULT_SIZE_ID } from "@/common/constants.js";
+
+export default {
+  name: "BuilderSizeSelector",
+  components: { RadioButton },
+  props: {
+    sizes: {
+      type: Array,
+      required: true,
+    },
+  },
+  computed: {
+    defaultSizeId() {
+      return DEFAULT_SIZE_ID;
+    },
+  },
+};
+</script>
+
+<style lang="scss">
 .diameter__input {
   margin-right: 8.7%;
   margin-bottom: 20px;
@@ -64,3 +105,4 @@
     }
   }
 }
+</style>
