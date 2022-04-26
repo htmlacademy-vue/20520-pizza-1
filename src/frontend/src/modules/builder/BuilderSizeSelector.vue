@@ -4,14 +4,13 @@
       <h2 class="title title--small sheet__title">Выберите размер</h2>
       <div class="sheet__content diameter">
         <RadioButton
+          @changeRadio="changeSizeId"
           v-for="size in sizes"
           :key="size.id"
           :data="size"
-          :default-id="defaultSizeId"
+          :default-id="currentSizeId"
           name="diameter"
-        >
-          <template #description>{{ size.name }}</template>
-        </RadioButton>
+        />
       </div>
     </div>
   </div>
@@ -19,7 +18,6 @@
 
 <script>
 import RadioButton from "@/common/components/RadioButton.vue";
-import { DEFAULT_SIZE_ID } from "@/common/constants.js";
 
 export default {
   name: "BuilderSizeSelector",
@@ -29,10 +27,14 @@ export default {
       type: Array,
       required: true,
     },
+    currentSizeId: {
+      type: Number,
+      required: true,
+    },
   },
-  computed: {
-    defaultSizeId() {
-      return DEFAULT_SIZE_ID;
+  methods: {
+    changeSizeId(sizeId) {
+      this.$emit("changeSize", sizeId);
     },
   },
 };
@@ -47,7 +49,7 @@ export default {
 
   cursor: pointer;
 
-  span {
+  b {
     @include r-s16-h19;
 
     position: relative;
@@ -76,31 +78,31 @@ export default {
   }
 
   &--small {
-    span::before {
+    b::before {
       background-size: 18px;
     }
   }
 
   &--normal {
-    span::before {
+    b::before {
       background-size: 29px;
     }
   }
 
   &--big {
-    span::before {
+    b::before {
       background-size: 100%;
     }
   }
 
   &:hover {
-    span::before {
+    b::before {
       box-shadow: $shadow-regular;
     }
   }
 
   input {
-    &:checked + span::before {
+    &:checked + b::before {
       box-shadow: $shadow-large;
     }
   }

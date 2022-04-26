@@ -12,10 +12,11 @@
             class="radio ingredients__input"
           >
             <input
+              @change="changeSauce(sauce.id)"
               type="radio"
               name="sauce"
               :value="sauce.value"
-              :checked="sauce.id === defaultSauceId"
+              :checked="sauce.id === currentSauceId"
             />
             <span>{{ sauce.name }}</span>
           </label>
@@ -33,7 +34,10 @@
               <span class="filling" :class="`filling--${ingredient.value}`">
                 {{ ingredient.name }}
               </span>
-              <ItemCounter class="ingredients__counter" />
+              <ItemCounter
+                @changeCount="changeIngredientsCount($event, ingredient.id)"
+                class="ingredients__counter"
+              />
             </li>
           </ul>
         </div>
@@ -44,7 +48,6 @@
 
 <script>
 import ItemCounter from "@/common/components/ItemCounter.vue";
-import { DEFAULT_SAUCE_ID } from "@/common/constants.js";
 export default {
   name: "BuilderIngredientsSelector",
   components: { ItemCounter },
@@ -57,10 +60,22 @@ export default {
       type: Array,
       required: true,
     },
+    currentSauceId: {
+      type: Number,
+      required: true,
+    },
+    ingredientsCount: {
+      type: Object,
+      required: true,
+    },
   },
-  computed: {
-    defaultSauceId() {
-      return DEFAULT_SAUCE_ID;
+  methods: {
+    changeIngredientsCount(newCount, ingredientId) {
+      this.ingredientsCount[ingredientId] = newCount;
+      this.$emit("changeIngredientsCount", this.ingredientsCount);
+    },
+    changeSauce: function (sauceId) {
+      this.$emit("changeSauce", sauceId);
     },
   },
 };

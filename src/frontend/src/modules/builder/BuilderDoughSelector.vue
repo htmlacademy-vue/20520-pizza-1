@@ -4,15 +4,13 @@
       <h2 class="title title--small sheet__title">Выберите тесто</h2>
       <div class="sheet__content dough">
         <RadioButton
+          @changeRadio="changeDoughId"
           v-for="doughItem in dough"
           :key="doughItem.id"
           :data="doughItem"
-          :default-id="defaultDoughId"
+          :default-id="currentDoughId"
           name="dough"
-        >
-          <template #name>{{ doughItem.name }}</template>
-          <template #description>{{ doughItem.description }}</template>
-        </RadioButton>
+        />
       </div>
     </div>
   </div>
@@ -20,7 +18,6 @@
 
 <script>
 import RadioButton from "@/common/components/RadioButton.vue";
-import { DEFAULT_DOUGH_ID } from "@/common/constants.js";
 
 export default {
   name: "BuilderDoughSelector",
@@ -30,10 +27,14 @@ export default {
       type: Array,
       required: true,
     },
+    currentDoughId: {
+      type: Number,
+      required: true,
+    },
   },
-  computed: {
-    defaultDoughId() {
-      return DEFAULT_DOUGH_ID;
+  methods: {
+    changeDoughId(doughId) {
+      this.$emit("changeDough", doughId);
     },
   },
 };

@@ -1,14 +1,22 @@
 <template>
   <div class="counter">
     <button
+      @click="counter--"
       type="button"
       class="counter__button counter__button--minus"
-      disabled
+      :disabled="!Number(this.counter)"
     >
       <span class="visually-hidden">Меньше</span>
     </button>
-    <input type="text" name="counter" class="counter__input" value="0" />
+    <input
+      v-model="counter"
+      type="text"
+      name="counter"
+      class="counter__input"
+      value="0"
+    />
     <button
+      @click="counter++"
       type="button"
       class="counter__button counter__button--plus"
       :class="orangeClass"
@@ -21,15 +29,21 @@
 <script>
 export default {
   name: "ItemCounter",
+  data() {
+    return {
+      counter: 0,
+      orangeClass: this.isOrange ? "counter__button--orange" : "",
+    };
+  },
   props: {
     isOrange: {
       type: Boolean,
       default: false,
     },
   },
-  computed: {
-    orangeClass: function () {
-      return this.isOrange ? "counter__button--orange" : "";
+  watch: {
+    counter: function () {
+      this.$emit("changeCount", Number(this.counter));
     },
   },
 };

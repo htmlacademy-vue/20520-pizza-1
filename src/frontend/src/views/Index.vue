@@ -24,12 +24,26 @@
         <div class="content__wrapper">
           <h1 class="title title--big">Конструктор пиццы</h1>
 
-          <BuilderDoughSelector class="content__dough" :dough="dough" />
-          <BuilderSizeSelector class="content__diameter" :sizes="sizes" />
+          <BuilderDoughSelector
+            @changeDough="changeDough"
+            class="content__dough"
+            :dough="dough"
+            :current-dough-id="currentDoughId"
+          />
+          <BuilderSizeSelector
+            @changeSize="changeSize"
+            class="content__diameter"
+            :sizes="sizes"
+            :current-size-id="currentSizeId"
+          />
           <BuilderIngredientsSelector
+            @changeIngredientsCount="changeIngredientsCount"
+            @changeSauce="changeSauce"
             class="content__ingredients"
             :ingredients="ingredients"
             :sauces="sauces"
+            :current-sauce-id="currentSauceId"
+            :ingredients-count="ingredientsCount"
           />
 
           <div class="content__pizza">
@@ -63,8 +77,16 @@ import {
   normalizeIngredients,
   normalizeSauces,
 } from "@/common/helpers";
+import {
+  DEFAULT_DOUGH_ID,
+  DEFAULT_SAUCE_ID,
+  DEFAULT_SIZE_ID,
+} from "@/common/constants";
 
 const { dough, ingredients, sauces, sizes } = pizza;
+const normalizedIngredients = ingredients.map((ingredient) =>
+  normalizeIngredients(ingredient)
+);
 
 export default {
   name: "Index.vue",
@@ -78,12 +100,30 @@ export default {
   data() {
     return {
       dough: dough.map((doughItem) => normalizeDough(doughItem)),
-      ingredients: ingredients.map((ingredient) =>
-        normalizeIngredients(ingredient)
-      ),
+      ingredients: normalizedIngredients,
       sauces: sauces.map((sauce) => normalizeSauces(sauce)),
       sizes: sizes.map((size) => normalizeSize(size)),
+      currentDoughId: DEFAULT_DOUGH_ID,
+      currentSizeId: DEFAULT_SIZE_ID,
+      currentSauceId: DEFAULT_SAUCE_ID,
+      ingredientsCount: Object.fromEntries(
+        normalizedIngredients.map((ingredient) => [ingredient.id, 0])
+      ),
     };
+  },
+  methods: {
+    changeDough(newDoughId) {
+      this.currentDoughId = newDoughId;
+    },
+    changeSize(newSizeId) {
+      this.currentSizeId = newSizeId;
+    },
+    changeIngredientsCount(newIngredients) {
+      this.ingredientsCount = newIngredients;
+    },
+    changeSauce(newSauceId) {
+      this.currentSauceId = newSauceId;
+    },
   },
 };
 </script>
