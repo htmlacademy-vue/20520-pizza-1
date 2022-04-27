@@ -14,6 +14,8 @@
       name="counter"
       class="counter__input"
       :value="counterValue"
+      :max="maxCount"
+      min="0"
     />
     <button
       @click="changeCount(counterValue + 1)"
