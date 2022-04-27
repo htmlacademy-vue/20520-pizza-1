@@ -1,23 +1,6 @@
 <template>
   <div>
-    <header class="header">
-      <div class="header__logo">
-        <a class="logo">
-          <img
-            src="@/assets/img/logo.svg"
-            alt="V!U!E! Pizza logo"
-            width="90"
-            height="40"
-          />
-        </a>
-      </div>
-      <div class="header__cart">
-        <a>0 ₽</a>
-      </div>
-      <div class="header__user">
-        <a href="#" class="header__login"><span>Войти</span></a>
-      </div>
-    </header>
+    <AppLayoutHeader :pizza-price="pizzaPrice" />
 
     <main class="content">
       <form action="#" method="post">
@@ -61,6 +44,7 @@
               class="content__constructor"
             />
             <BuilderPriceCounter
+              @changePrice="changePrice"
               :pizza-data="pizzaData"
               :pizza-settings="pizzaSettings"
               class="content__result"
@@ -90,6 +74,7 @@ import {
   DEFAULT_SAUCE_ID,
   DEFAULT_SIZE_ID,
 } from "@/common/constants";
+import AppLayoutHeader from "@/layouts/AppLayoutHeader";
 
 const { dough, ingredients, sauces, sizes } = pizza;
 const normalizedIngredients = ingredients.map((ingredient) =>
@@ -99,6 +84,7 @@ const normalizedIngredients = ingredients.map((ingredient) =>
 export default {
   name: "Index.vue",
   components: {
+    AppLayoutHeader,
     BuilderSizeSelector,
     BuilderDoughSelector,
     BuilderIngredientsSelector,
@@ -121,9 +107,13 @@ export default {
           normalizedIngredients.map((ingredient) => [ingredient.id, 0])
         ),
       },
+      pizzaPrice: 0,
     };
   },
   methods: {
+    changePrice(newPrice) {
+      this.pizzaPrice = newPrice;
+    },
     changeDough(newDoughId) {
       this.pizzaSettings.currentDoughId = newDoughId;
     },
@@ -142,21 +132,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.header__login {
-  &::after {
-    display: inline-block;
-
-    width: 32px;
-    height: 32px;
-    margin-left: 8px;
-
-    content: "";
-    vertical-align: middle;
-
-    background: url("~@/assets/img/login.svg") no-repeat center;
-    background-size: auto 50%;
-  }
-}
-</style>

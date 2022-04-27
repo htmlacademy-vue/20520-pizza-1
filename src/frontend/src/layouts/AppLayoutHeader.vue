@@ -1,3 +1,37 @@
+<template>
+  <header class="header">
+    <div class="header__logo">
+      <a class="logo">
+        <img
+          src="@/assets/img/logo.svg"
+          alt="V!U!E! Pizza logo"
+          width="90"
+          height="40"
+        />
+      </a>
+    </div>
+    <div class="header__cart">
+      <a>{{ pizzaPrice }} ₽</a>
+    </div>
+    <div class="header__user">
+      <a href="#" class="header__login"><span>Войти</span></a>
+    </div>
+  </header>
+</template>
+
+<script>
+export default {
+  name: "AppLayoutHeader",
+  props: {
+    pizzaPrice: {
+      type: Number,
+      required: true,
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
 .header {
   position: relative;
   z-index: 2;
@@ -24,10 +58,7 @@
 
     display: block;
 
-    padding-top: 21px;
-    padding-right: 15px;
-    padding-bottom: 21px;
-    padding-left: 58px;
+    padding: 21px 15px 21px 58px;
 
     transition: 0.3s;
 
@@ -56,10 +87,7 @@
   a {
     display: block;
 
-    padding-top: 14px;
-    padding-right: 20px;
-    padding-bottom: 14px;
-    padding-left: 20px;
+    padding: 14px 20px;
 
     transition: 0.3s;
 
@@ -100,3 +128,20 @@
     color: $white;
   }
 }
+
+.header__login {
+  &::after {
+    display: inline-block;
+
+    width: 32px;
+    height: 32px;
+    margin-left: 8px;
+
+    content: "";
+    vertical-align: middle;
+
+    background: url("~@/assets/img/login.svg") no-repeat center;
+    background-size: auto 50%;
+  }
+}
+</style>

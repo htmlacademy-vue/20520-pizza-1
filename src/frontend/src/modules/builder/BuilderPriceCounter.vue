@@ -46,12 +46,14 @@ export default {
             ingredientsPrices[ingredientId]
         );
       }, 0);
-      return Number(
+      const totalPrice = Number(
         (doughPrices[this.pizzaSettings.currentDoughId] +
           saucesPrices[this.pizzaSettings.currentSauceId] +
           ingredientsCost) *
           sizesMultipliers[this.pizzaSettings.currentSizeId]
       );
+      this.$emit("changePrice", totalPrice);
+      return totalPrice;
     },
   },
 };
