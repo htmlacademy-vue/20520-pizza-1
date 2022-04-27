@@ -10,7 +10,7 @@
     </button>
     <input
       v-model="counter"
-      type="text"
+      type="number"
       name="counter"
       class="counter__input"
       value="0"
@@ -20,6 +20,7 @@
       type="button"
       class="counter__button counter__button--plus"
       :class="orangeClass"
+      :disabled="Number(this.counter) >= maxCount"
     >
       <span class="visually-hidden">Больше</span>
     </button>
@@ -40,9 +41,19 @@ export default {
       type: Boolean,
       default: false,
     },
+    maxCount: {
+      type: Number,
+      default: Infinity,
+    },
   },
   watch: {
     counter: function () {
+      if (this.counter > this.maxCount) {
+        this.counter = this.maxCount;
+      }
+      if (this.counter < 0) {
+        this.counter = 0;
+      }
       this.$emit("changeCount", Number(this.counter));
     },
   },
@@ -192,5 +203,11 @@ export default {
   &:focus {
     box-shadow: inset $shadow-regular;
   }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  -moz-appearance: textfield;
 }
 </style>

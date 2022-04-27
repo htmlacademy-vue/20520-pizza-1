@@ -36,6 +36,7 @@
               </span>
               <ItemCounter
                 @changeCount="changeIngredientsCount($event, ingredient.id)"
+                :max-count="maxIngredientCount"
                 class="ingredients__counter"
               />
             </li>
@@ -48,6 +49,8 @@
 
 <script>
 import ItemCounter from "@/common/components/ItemCounter.vue";
+import { MAX_INGREDIENT_COUNT } from "@/common/constants";
+
 export default {
   name: "BuilderIngredientsSelector",
   components: { ItemCounter },
@@ -76,6 +79,11 @@ export default {
     },
     changeSauce: function (sauceId) {
       this.$emit("changeSauce", sauceId);
+    },
+  },
+  computed: {
+    maxIngredientCount() {
+      return MAX_INGREDIENT_COUNT;
     },
   },
 };

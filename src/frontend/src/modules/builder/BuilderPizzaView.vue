@@ -1,18 +1,55 @@
 <template>
   <div>
-    <div class="pizza pizza--foundation--big-tomato">
+    <div class="pizza" :class="foundationClass">
       <div class="pizza__wrapper">
-        <div class="pizza__filling pizza__filling--ananas"></div>
-        <div class="pizza__filling pizza__filling--bacon"></div>
-        <div class="pizza__filling pizza__filling--cheddar"></div>
+        <div
+          v-for="[key] of fillings"
+          :key="key"
+          :class="`pizza__filling--${INGREDIENTS_MODIFIER[key]}`"
+          class="pizza__filling"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+const DOUGH_MODIFIER = {
+  1: "small",
+  2: "big",
+};
+import SAUCES_MODIFIER from "@/common/enums/sauces";
+import INGREDIENTS_MODIFIER from "@/common/enums/ingredients";
 export default {
   name: "BuilderPizzaView",
+  data() {
+    return {
+      DOUGH_MODIFIER: {
+        1: "small",
+        2: "big",
+      },
+      SAUCES_MODIFIER,
+      INGREDIENTS_MODIFIER,
+    };
+  },
+  props: {
+    pizzaSettings: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    foundationClass() {
+      return `pizza--foundation--${
+        DOUGH_MODIFIER[this.pizzaSettings.currentDoughId]
+      }-${SAUCES_MODIFIER[this.pizzaSettings.currentSauceId]}`;
+    },
+    fillings() {
+      return Object.entries(this.pizzaSettings.ingredientsCount).filter(
+        ([, value]) => value
+      );
+    },
+  },
 };
 </script>
 

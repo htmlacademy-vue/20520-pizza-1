@@ -27,23 +27,23 @@
           <BuilderDoughSelector
             @changeDough="changeDough"
             class="content__dough"
-            :dough="dough"
-            :current-dough-id="currentDoughId"
+            :dough="pizzaData.dough"
+            :current-dough-id="pizzaSettings.currentDoughId"
           />
           <BuilderSizeSelector
             @changeSize="changeSize"
             class="content__diameter"
-            :sizes="sizes"
-            :current-size-id="currentSizeId"
+            :sizes="pizzaData.sizes"
+            :current-size-id="pizzaSettings.currentSizeId"
           />
           <BuilderIngredientsSelector
             @changeIngredientsCount="changeIngredientsCount"
             @changeSauce="changeSauce"
             class="content__ingredients"
-            :ingredients="ingredients"
-            :sauces="sauces"
-            :current-sauce-id="currentSauceId"
-            :ingredients-count="ingredientsCount"
+            :ingredients="pizzaData.ingredients"
+            :sauces="pizzaData.sauces"
+            :current-sauce-id="pizzaSettings.currentSauceId"
+            :ingredients-count="pizzaSettings.ingredientsCount"
           />
 
           <div class="content__pizza">
@@ -55,8 +55,15 @@
                 placeholder="Введите название пиццы"
               />
             </label>
-            <BuilderPizzaView class="content__constructor" />
-            <BuilderPriceCounter class="content__result" />
+            <BuilderPizzaView
+              :pizza-settings="pizzaSettings"
+              class="content__constructor"
+            />
+            <BuilderPriceCounter
+              :pizza-data="pizzaData"
+              :pizza-settings="pizzaSettings"
+              class="content__result"
+            />
           </div>
         </div>
       </form>
@@ -99,30 +106,34 @@ export default {
   },
   data() {
     return {
-      dough: dough.map((doughItem) => normalizeDough(doughItem)),
-      ingredients: normalizedIngredients,
-      sauces: sauces.map((sauce) => normalizeSauces(sauce)),
-      sizes: sizes.map((size) => normalizeSize(size)),
-      currentDoughId: DEFAULT_DOUGH_ID,
-      currentSizeId: DEFAULT_SIZE_ID,
-      currentSauceId: DEFAULT_SAUCE_ID,
-      ingredientsCount: Object.fromEntries(
-        normalizedIngredients.map((ingredient) => [ingredient.id, 0])
-      ),
+      pizzaData: {
+        dough: dough.map((doughItem) => normalizeDough(doughItem)),
+        ingredients: normalizedIngredients,
+        sauces: sauces.map((sauce) => normalizeSauces(sauce)),
+        sizes: sizes.map((size) => normalizeSize(size)),
+      },
+      pizzaSettings: {
+        currentDoughId: DEFAULT_DOUGH_ID,
+        currentSizeId: DEFAULT_SIZE_ID,
+        currentSauceId: DEFAULT_SAUCE_ID,
+        ingredientsCount: Object.fromEntries(
+          normalizedIngredients.map((ingredient) => [ingredient.id, 0])
+        ),
+      },
     };
   },
   methods: {
     changeDough(newDoughId) {
-      this.currentDoughId = newDoughId;
+      this.pizzaSettings.currentDoughId = newDoughId;
     },
     changeSize(newSizeId) {
-      this.currentSizeId = newSizeId;
+      this.pizzaSettings.currentSizeId = newSizeId;
     },
     changeIngredientsCount(newIngredients) {
-      this.ingredientsCount = newIngredients;
+      this.pizzaSettings.ingredientsCount = newIngredients;
     },
     changeSauce(newSauceId) {
-      this.currentSauceId = newSauceId;
+      this.pizzaSettings.currentSauceId = newSauceId;
     },
   },
 };
