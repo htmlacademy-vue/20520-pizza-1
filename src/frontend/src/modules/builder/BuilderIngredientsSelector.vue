@@ -31,11 +31,16 @@
               :key="ingredient.id"
               class="ingredients__item"
             >
-              <span class="filling" :class="`filling--${ingredient.value}`">
-                {{ ingredient.name }}
-              </span>
+              <AppDrop>
+                <AppDrag :transfer-data="ingredient">
+                  <span class="filling" :class="`filling--${ingredient.value}`">
+                    {{ ingredient.name }}
+                  </span>
+                </AppDrag>
+              </AppDrop>
               <ItemCounter
                 @changeCount="changeIngredientsCount($event, ingredient.id)"
+                :counter-value="ingredientsCount[ingredient.id]"
                 :max-count="maxIngredientCount"
                 class="ingredients__counter"
               />
@@ -50,10 +55,12 @@
 <script>
 import ItemCounter from "@/common/components/ItemCounter.vue";
 import { MAX_INGREDIENT_COUNT } from "@/common/constants";
+import AppDrag from "@/common/components/AppDrag";
+import AppDrop from "@/common/components/AppDrop";
 
 export default {
   name: "BuilderIngredientsSelector",
-  components: { ItemCounter },
+  components: { AppDrop, AppDrag, ItemCounter },
   props: {
     sauces: {
       type: Array,
@@ -74,6 +81,14 @@ export default {
   },
   methods: {
     changeIngredientsCount(newCount, ingredientId) {
+      if (newCount > this.maxIngredientCount) {
+        this.ingredientsCount[ingredientId] = this.maxIngredientCount;
+        return;
+      }
+      if (newCount < 0) {
+        this.ingredientsCount[ingredientId] = 0;
+        return;
+      }
       this.ingredientsCount[ingredientId] = newCount;
       this.$emit("changeIngredientsCount", this.ingredientsCount);
     },

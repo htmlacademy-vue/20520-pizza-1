@@ -56,6 +56,7 @@
               />
             </label>
             <BuilderPizzaView
+              @drop="onDropIngredient"
               :pizza-settings="pizzaSettings"
               class="content__constructor"
             />
@@ -134,6 +135,9 @@ export default {
     },
     changeSauce(newSauceId) {
       this.pizzaSettings.currentSauceId = newSauceId;
+    },
+    onDropIngredient(ingredient) {
+      this.pizzaSettings.ingredientsCount[ingredient.id]++;
     },
   },
 };

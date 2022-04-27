@@ -1,26 +1,26 @@
 <template>
   <div class="counter">
     <button
-      @click="counter--"
+      @click="changeCount(counterValue - 1)"
       type="button"
       class="counter__button counter__button--minus"
-      :disabled="!Number(this.counter)"
+      :disabled="!Number(counterValue)"
     >
       <span class="visually-hidden">Меньше</span>
     </button>
     <input
-      v-model="counter"
+      @change="changeCount($event.target.value)"
       type="number"
       name="counter"
       class="counter__input"
-      value="0"
+      :value="counterValue"
     />
     <button
-      @click="counter++"
+      @click="changeCount(counterValue + 1)"
       type="button"
       class="counter__button counter__button--plus"
       :class="orangeClass"
-      :disabled="Number(this.counter) >= maxCount"
+      :disabled="Number(counterValue) >= maxCount"
     >
       <span class="visually-hidden">Больше</span>
     </button>
@@ -32,7 +32,6 @@ export default {
   name: "ItemCounter",
   data() {
     return {
-      counter: 0,
       orangeClass: this.isOrange ? "counter__button--orange" : "",
     };
   },
@@ -41,20 +40,18 @@ export default {
       type: Boolean,
       default: false,
     },
+    counterValue: {
+      type: Number,
+      required: true,
+    },
     maxCount: {
       type: Number,
       default: Infinity,
     },
   },
-  watch: {
-    counter: function () {
-      if (this.counter > this.maxCount) {
-        this.counter = this.maxCount;
-      }
-      if (this.counter < 0) {
-        this.counter = 0;
-      }
-      this.$emit("changeCount", Number(this.counter));
+  methods: {
+    changeCount(newCount) {
+      this.$emit("changeCount", newCount);
     },
   },
 };

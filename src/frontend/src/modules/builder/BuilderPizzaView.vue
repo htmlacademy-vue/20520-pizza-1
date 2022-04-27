@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <AppDrop @drop="$emit('drop', $event)">
     <div class="pizza" :class="foundationClass">
       <div class="pizza__wrapper">
         <div
@@ -10,18 +10,17 @@
         />
       </div>
     </div>
-  </div>
+  </AppDrop>
 </template>
 
 <script>
-const DOUGH_MODIFIER = {
-  1: "small",
-  2: "big",
-};
+import AppDrop from "@/common/components/AppDrop";
 import SAUCES_MODIFIER from "@/common/enums/sauces";
 import INGREDIENTS_MODIFIER from "@/common/enums/ingredients";
+
 export default {
   name: "BuilderPizzaView",
+  components: { AppDrop },
   data() {
     return {
       DOUGH_MODIFIER: {
@@ -41,8 +40,8 @@ export default {
   computed: {
     foundationClass() {
       return `pizza--foundation--${
-        DOUGH_MODIFIER[this.pizzaSettings.currentDoughId]
-      }-${SAUCES_MODIFIER[this.pizzaSettings.currentSauceId]}`;
+        this.DOUGH_MODIFIER[this.pizzaSettings.currentDoughId]
+      }-${this.SAUCES_MODIFIER[this.pizzaSettings.currentSauceId]}`;
     },
     fillings() {
       return Object.entries(this.pizzaSettings.ingredientsCount).filter(
