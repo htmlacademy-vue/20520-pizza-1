@@ -7,9 +7,12 @@
           @changeRadio="changeDoughId"
           v-for="doughItem in dough"
           :key="doughItem.id"
-          :data="doughItem"
+          radioType="dough"
+          :id="doughItem.id"
+          :name="doughItem.name"
+          :description="doughItem.description"
+          :value="doughItem.value"
           :default-id="currentDoughId"
-          name="dough"
         />
       </div>
     </div>

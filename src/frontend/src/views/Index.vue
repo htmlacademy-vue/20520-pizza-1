@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AppLayoutHeader :pizza-price="pizzaPrice" />
+    <AppLayoutHeader />
 
     <main class="content">
       <form action="#" method="post">
@@ -20,19 +20,19 @@
             :current-size-id="pizzaSettings.currentSizeId"
           />
           <BuilderIngredientsSelector
-            @changeIngredientsCount="changeIngredientsCount"
             @changeSauce="changeSauce"
-            class="content__ingredients"
             :ingredients="pizzaData.ingredients"
             :sauces="pizzaData.sauces"
             :current-sauce-id="pizzaSettings.currentSauceId"
-            :ingredients-count="pizzaSettings.ingredientsCount"
+            :ingredients-count.sync="pizzaSettings.ingredientsCount"
+            class="content__ingredients"
           />
 
           <div class="content__pizza">
             <label class="input">
               <span class="visually-hidden">Название пиццы</span>
               <input
+                v-model="pizzaName"
                 type="text"
                 name="pizza_name"
                 placeholder="Введите название пиццы"
@@ -40,13 +40,21 @@
             </label>
             <BuilderPizzaView
               @drop="onDropIngredient"
-              :pizza-settings="pizzaSettings"
+              :current-dough-id="pizzaSettings.currentDoughId"
+              :current-sauce-id="pizzaSettings.currentSauceId"
+              :ingredients-count="pizzaSettings.ingredientsCount"
               class="content__constructor"
             />
             <BuilderPriceCounter
-              @changePrice="changePrice"
-              :pizza-data="pizzaData"
-              :pizza-settings="pizzaSettings"
+              :pizzaName="pizzaName"
+              :dough="pizzaData.dough"
+              :ingredients="pizzaData.ingredients"
+              :sauces="pizzaData.sauces"
+              :sizes="pizzaData.sizes"
+              :current-dough-id="pizzaSettings.currentDoughId"
+              :current-size-id="pizzaSettings.currentSizeId"
+              :current-sauce-id="pizzaSettings.currentSauceId"
+              :ingredients-count="pizzaSettings.ingredientsCount"
               class="content__result"
             />
           </div>
@@ -57,6 +65,7 @@
 </template>
 
 <script>
+import AppLayoutHeader from "@/layouts/AppLayoutHeader";
 import BuilderDoughSelector from "@/modules/builder/BuilderDoughSelector.vue";
 import BuilderSizeSelector from "@/modules/builder/BuilderSizeSelector.vue";
 import BuilderIngredientsSelector from "@/modules/builder/BuilderIngredientsSelector.vue";
@@ -73,8 +82,8 @@ import {
   DEFAULT_DOUGH_ID,
   DEFAULT_SAUCE_ID,
   DEFAULT_SIZE_ID,
+  MAX_INGREDIENT_COUNT,
 } from "@/common/constants";
-import AppLayoutHeader from "@/layouts/AppLayoutHeader";
 
 const { dough, ingredients, sauces, sizes } = pizza;
 const normalizedIngredients = ingredients.map((ingredient) =>
@@ -93,6 +102,7 @@ export default {
   },
   data() {
     return {
+      pizzaName: "",
       pizzaData: {
         dough: dough.map((doughItem) => normalizeDough(doughItem)),
         ingredients: normalizedIngredients,
@@ -107,27 +117,25 @@ export default {
           normalizedIngredients.map((ingredient) => [ingredient.id, 0])
         ),
       },
-      pizzaPrice: 0,
     };
   },
   methods: {
-    changePrice(newPrice) {
-      this.pizzaPrice = newPrice;
-    },
     changeDough(newDoughId) {
       this.pizzaSettings.currentDoughId = newDoughId;
     },
     changeSize(newSizeId) {
       this.pizzaSettings.currentSizeId = newSizeId;
     },
-    changeIngredientsCount(newIngredients) {
-      this.pizzaSettings.ingredientsCount = newIngredients;
-    },
     changeSauce(newSauceId) {
       this.pizzaSettings.currentSauceId = newSauceId;
     },
     onDropIngredient(ingredient) {
-      this.pizzaSettings.ingredientsCount[ingredient.id]++;
+      if (
+        this.pizzaSettings.ingredientsCount[ingredient.id] <
+        MAX_INGREDIENT_COUNT
+      ) {
+        this.pizzaSettings.ingredientsCount[ingredient.id]++;
+      }
     },
   },
 };

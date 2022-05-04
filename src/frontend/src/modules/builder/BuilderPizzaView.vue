@@ -3,9 +3,13 @@
     <div class="pizza" :class="foundationClass">
       <div class="pizza__wrapper">
         <div
-          v-for="[key] of fillings"
+          v-for="[key, value] of fillings"
           :key="key"
-          :class="`pizza__filling--${INGREDIENTS_MODIFIER[key]}`"
+          :class="[
+            `pizza__filling--${INGREDIENTS_MODIFIER[key]}`,
+            { 'pizza__filling--second': value === TWO_INGREDIENTS },
+            { 'pizza__filling--third': value === THREE_INGREDIENTS },
+          ]"
           class="pizza__filling"
         />
       </div>
@@ -18,6 +22,9 @@ import AppDrop from "@/common/components/AppDrop";
 import SAUCES_MODIFIER from "@/common/enums/sauces";
 import INGREDIENTS_MODIFIER from "@/common/enums/ingredients";
 
+const TWO_INGREDIENTS = 2;
+const THREE_INGREDIENTS = 3;
+
 export default {
   name: "BuilderPizzaView",
   components: { AppDrop },
@@ -29,24 +36,32 @@ export default {
       },
       SAUCES_MODIFIER,
       INGREDIENTS_MODIFIER,
+      TWO_INGREDIENTS,
+      THREE_INGREDIENTS,
     };
   },
   props: {
-    pizzaSettings: {
+    currentDoughId: {
+      type: Number,
+      required: true,
+    },
+    currentSauceId: {
+      type: Number,
+      required: true,
+    },
+    ingredientsCount: {
       type: Object,
       required: true,
     },
   },
   computed: {
     foundationClass() {
-      return `pizza--foundation--${
-        this.DOUGH_MODIFIER[this.pizzaSettings.currentDoughId]
-      }-${this.SAUCES_MODIFIER[this.pizzaSettings.currentSauceId]}`;
+      return `pizza--foundation--${this.DOUGH_MODIFIER[this.currentDoughId]}-${
+        this.SAUCES_MODIFIER[this.currentSauceId]
+      }`;
     },
     fillings() {
-      return Object.entries(this.pizzaSettings.ingredientsCount).filter(
-        ([, value]) => value
-      );
+      return Object.entries(this.ingredientsCount).filter(([, value]) => value);
     },
   },
 };

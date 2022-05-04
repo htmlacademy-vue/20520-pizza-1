@@ -21,7 +21,7 @@
       @click="changeCount(counterValue + 1)"
       type="button"
       class="counter__button counter__button--plus"
-      :class="orangeClass"
+      :class="{ 'counter__button--orange': isOrange }"
       :disabled="Number(counterValue) >= maxCount"
     >
       <span class="visually-hidden">Больше</span>
@@ -32,11 +32,6 @@
 <script>
 export default {
   name: "ItemCounter",
-  data() {
-    return {
-      orangeClass: this.isOrange ? "counter__button--orange" : "",
-    };
-  },
   props: {
     isOrange: {
       type: Boolean,

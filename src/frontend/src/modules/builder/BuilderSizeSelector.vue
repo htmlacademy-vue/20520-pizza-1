@@ -7,9 +7,11 @@
           @changeRadio="changeSizeId"
           v-for="size in sizes"
           :key="size.id"
-          :data="size"
+          radioType="diameter"
+          :id="size.id"
+          :name="size.name"
+          :value="size.value"
           :default-id="currentSizeId"
-          name="diameter"
         />
       </div>
     </div>

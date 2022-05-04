@@ -90,7 +90,6 @@ export default {
         return;
       }
       this.ingredientsCount[ingredientId] = newCount;
-      this.$emit("changeIngredientsCount", this.ingredientsCount);
     },
     changeSauce: function (sauceId) {
       this.$emit("changeSauce", sauceId);

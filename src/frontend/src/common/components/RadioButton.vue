@@ -1,15 +1,15 @@
 <template>
-  <label :class="`${name}__input ${name}__input--${data.value}`">
+  <label :class="`${radioType}__input ${radioType}__input--${value}`">
     <input
       @change="changeValue"
       type="radio"
-      :name="`${name}`"
-      :value="data.value"
+      :name="radioType"
+      :value="value"
       class="visually-hidden"
-      :checked="data.id === defaultId"
+      :checked="id === defaultId"
     />
-    <b v-if="data.name">{{ data.name }}</b>
-    <span v-if="data.description">{{ data.description }}</span>
+    <b v-if="name">{{ name }}</b>
+    <span v-if="description">{{ description }}</span>
   </label>
 </template>
 
@@ -17,12 +17,24 @@
 export default {
   name: "RadioButton",
   props: {
-    name: {
+    radioType: {
       type: String,
       required: true,
     },
-    data: {
-      type: Object,
+    name: {
+      type: String,
+      default: "",
+    },
+    description: {
+      type: String,
+      default: "",
+    },
+    value: {
+      type: String,
+      required: true,
+    },
+    id: {
+      type: Number,
       required: true,
     },
     defaultId: {
@@ -32,7 +44,7 @@ export default {
   },
   methods: {
     changeValue: function () {
-      this.$emit("changeRadio", this.data.id);
+      this.$emit("changeRadio", this.id);
     },
   },
 };
