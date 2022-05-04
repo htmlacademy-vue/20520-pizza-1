@@ -1,3 +1,60 @@
+<template>
+  <div class="counter">
+    <button
+      @click="changeCount(counterValue - 1)"
+      type="button"
+      class="counter__button counter__button--minus"
+      :disabled="!Number(counterValue)"
+    >
+      <span class="visually-hidden">Меньше</span>
+    </button>
+    <input
+      @change="changeCount($event.target.value)"
+      type="number"
+      name="counter"
+      class="counter__input"
+      :value="counterValue"
+      :max="maxCount"
+      min="0"
+    />
+    <button
+      @click="changeCount(counterValue + 1)"
+      type="button"
+      class="counter__button counter__button--plus"
+      :class="{ 'counter__button--orange': isOrange }"
+      :disabled="Number(counterValue) >= maxCount"
+    >
+      <span class="visually-hidden">Больше</span>
+    </button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "ItemCounter",
+  props: {
+    isOrange: {
+      type: Boolean,
+      default: false,
+    },
+    counterValue: {
+      type: Number,
+      required: true,
+    },
+    maxCount: {
+      type: Number,
+      default: Infinity,
+    },
+  },
+  methods: {
+    changeCount(newCount) {
+      this.$emit("changeCount", newCount);
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
 .counter {
   display: flex;
 
@@ -140,4 +197,11 @@
   &:focus {
     box-shadow: inset $shadow-regular;
   }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  -moz-appearance: textfield;
 }
+</style>

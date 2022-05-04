@@ -1,8 +1,9 @@
 module.exports = {
+  publicPath: process.env.NODE_ENV === "production" ? "" : "/",
   css: {
     loaderOptions: {
       sass: {
-        additionalData: '@import "@/assets/scss/ds-system/ds.scss";',
+        additionalData: '@import "@/assets/scss/app.scss";',
       },
     },
   },
@@ -28,7 +29,7 @@ module.exports = {
     },
 
     overlay: {
-      warnings: true,
+      warnings: false,
       errors: true,
     },
   },
